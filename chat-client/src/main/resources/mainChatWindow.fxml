@@ -44,12 +44,12 @@
             </Menu>
         </MenuBar>
         <HBox VBox.vgrow="ALWAYS">
-            <TextArea fx:id="mainChatArea" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS" editable="false">
+            <TextArea fx:id="mainChatArea" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS" editable="false" wrapText="true">
                 <HBox.margin>
                     <Insets left="5.0" right="5.0"/>
                 </HBox.margin>
             </TextArea>
-            <ListView fx:id="contactList" minWidth="125.0">
+            <ListView fx:id="contactList" minWidth="125.0" >
                 <Insets left="5.0" right="5.0"/>
             </ListView>
             <VBox.margin>

@@ -4,17 +4,22 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.ResourceBundle;
 
 public class MainChatController implements Initializable {
+
+    MultipleSelectionModel<String> langsSelectionModel;
+
+    @FXML
+    public TextField inputField;
+
     @FXML
     public VBox mainChatPanel;
 
@@ -23,9 +28,6 @@ public class MainChatController implements Initializable {
 
     @FXML
     public ListView contactList;
-
-    @FXML
-    public TextField inputField;
 
     @FXML
     public Button btnSend;
@@ -50,11 +52,23 @@ public class MainChatController implements Initializable {
     }
 
     public void sendMessage(ActionEvent actionEvent) {
-        var message = inputField.getText();
-        if(message.isBlank()){
+
+        var selectUserContact = langsSelectionModel.getSelectedItems();
+        var userMessage = inputField.getText();
+        if (userMessage.isBlank()) {
             return;
         }
-        mainChatArea.appendText( System.lineSeparator());
+
+        var fullMessage = new SimpleDateFormat("HH:mm:ss").format(new Date())
+                + " - "
+                + userMessage
+                + System.lineSeparator();
+
+        if (selectUserContact.size() == 0) {
+            mainChatArea.appendText("ALL: " + fullMessage);
+        } else {
+            mainChatArea.appendText(String.join(", ", selectUserContact) + ": " + fullMessage);
+        }
         inputField.clear();
     }
 
@@ -65,5 +79,9 @@ public class MainChatController implements Initializable {
             contacts.add("Contact#" + (i + 1));
         }
         contactList.setItems(FXCollections.observableList(contacts));
+
+        langsSelectionModel = contactList.getSelectionModel();
+        langsSelectionModel.setSelectionMode(SelectionMode.MULTIPLE);
+
     }
 }
